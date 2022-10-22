@@ -15,7 +15,7 @@ key = app.config['DB_ENCRYPTION_KEY']
 
 
 def aes_encrypt(data):
-  cipher = AES.new(key, AES.MODE_CFB, key[::-1])
+  cipher = AES.new(key.encode('utf-8'), AES.MODE_CFB, key[::-1])
   return cipher.encrypt(data)
 
 def aes_encrypt_old(data):
