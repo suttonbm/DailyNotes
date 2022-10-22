@@ -15,11 +15,11 @@ key = app.config['DB_ENCRYPTION_KEY']
 
 
 def aes_encrypt(data):
-  cipher = AES.new(key.encode('utf-8'), AES.MODE_CFB, key[::-1])
+  cipher = AES.new(key.encode('utf-8'), AES.MODE_CFB, key[::-1].encode('utf-8'))
   return cipher.encrypt(data)
 
 def aes_encrypt_old(data):
-  cipher = AES.new(key)
+  cipher = AES.new(key.encode('utf-8'))
   data = data + (" " * (16 - (len(data) % 16)))
   return binascii.hexlify(cipher.encrypt(data))
 
@@ -28,7 +28,7 @@ def aes_decrypt(data):
   if type(data) is InstrumentedAttribute:
     return ''
 
-  cipher = AES.new(key, AES.MODE_CFB, key[::-1])
+  cipher = AES.new(key.encode('utf-8'), AES.MODE_CFB, key[::-1].encode('utf-8'))
 
   decrypted = cipher.decrypt(data)
 
@@ -40,7 +40,7 @@ def aes_decrypt(data):
 
 def aes_decrypt_old(data):
   try:
-    cipher = AES.new(key)
+    cipher = AES.new(key.encode('utf-8'))
     return cipher.decrypt(binascii.unhexlify(data)).rstrip().decode('ascii')
   except:
     # If data is not encrypted, just return it
