@@ -16,12 +16,12 @@ key = app.config['DB_ENCRYPTION_KEY']
 
 def aes_encrypt(data):
   cipher = AES.new(key.encode('utf-8'), AES.MODE_CFB, key[::-1].encode('utf-8'))
-  return cipher.encrypt(data)
+  return cipher.encrypt(data.encode('utf-8'))
 
 def aes_encrypt_old(data):
   cipher = AES.new(key.encode('utf-8'))
   data = data + (" " * (16 - (len(data) % 16)))
-  return binascii.hexlify(cipher.encrypt(data))
+  return binascii.hexlify(cipher.encrypt(data.encode('utf-8')))
 
 def aes_decrypt(data):
   # From a new object
